@@ -47,7 +47,7 @@ Bem-vindo à **API de Autenticação e CRUD de Usuários**! Esta API permite que
     npm start
 A API estará disponível em http://localhost:3000.
 
-## 🧪 **Testando a API com Postman**
+## 🧪 **Testando a API com Postman e com o Render**
 Para testar os endpoints que requerem autenticação com JWT, use o Postman. Certifique-se de adicionar o token JWT no cabeçalho da requisição.
 
 - Link da documentação completa: 
@@ -55,6 +55,10 @@ Para testar os endpoints que requerem autenticação com JWT, use o Postman. Cer
 
 - Cabeçalho para autenticação:
 Authorization: Bearer {seu_token_jwt_aqui}
+
+- Para o teste das rotas GET, utilize o deploy da API:
+[Render](https://api-login-z19r.onrender.com/)
+
 
 ## 📄 **Licença**
 Este projeto é licenciado sob a MIT License. Veja o arquivo LICENSE para mais detalhes.
