@@ -1,0 +1,23 @@
+{
+  "name": "api-login",
+  "version": "1.0.0",
+  "description": "- Express e MongoDB (ODM Mongoose);\r - Postman e Thunderclient;\r - Arquitetura MVC;\r - Endpoints públicos e privados;\r - Privados necessitam de token para serem utilizados;\r - O token é entregue através do login bem sucedido;\r - Token enviado na header da requisição;\r - Middleware para validar o token;\r - Não persistência de sessão no backend, tudo feito pelo backend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
