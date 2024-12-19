@@ -9,7 +9,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/user', verifyToken, getUser); 
 router.get('/users', getAllUsers);
-router.put('/user', verifyToken, updateUser);
-router.delete('/user', verifyToken, deleteUser);
+router.put('/user/:id', verifyToken, updateUser);
+router.delete('/user/:id', verifyToken, deleteUser);
 
 module.exports = router;
