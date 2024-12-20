@@ -15,15 +15,15 @@ router.get('/admin-only', verifyToken, verifyAdmin, (req, res) => {
 router.get('/user', verifyToken, getUser); 
 router.get('/users', verifyToken, verifyAdmin, getAllUsers);
 
-router.put('/user/:id', verifyToken, async (req, res, next) => {
-    if (req.params.id !== req.userId) {
+router.put('/user/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+    if (req.params.id !== req.userId && req.role !== 'admin') {
         return res.status(403).json({ msg: 'Você não tem permissão para atualizar esse usuário.' });
     }
     next();
 }, updateUser);
 
-router.delete('/user/:id', verifyToken, async (req, res, next) => {
-    if (req.params.id !== req.userId) {
+router.delete('/user/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+    if (req.params.id !== req.userId && req.role !== 'admin') {
         return res.status(403).json({ msg: 'Você não tem permissão para deletar esse usuário.' });
     }
     next();

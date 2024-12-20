@@ -6,9 +6,9 @@ const verifyToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
 
-        const { id, role } = decoded; // Agora pegamos o role também
+        const { id, role } = decoded; 
         req.userId = id;
-        req.role = role; // Adicionando role ao req
+        req.role = role; 
 
         next();
     } catch (err) {

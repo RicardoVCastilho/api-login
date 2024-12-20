@@ -20,11 +20,10 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ msg: 'Senha inválida.' });
         }
 
-        // Aqui, vamos incluir o `role` no payload do token
         const token = jwt.sign(
-            { id: user._id, role: user.role }, // Adicionando o `role` ao token
+            { id: user._id, role: user.role },
             process.env.SECRET,
-            { expiresIn: '1h' } // Aqui também podemos adicionar um tempo de expiração se desejado
+            { expiresIn: '1h' }
         );
 
         res.status(200).json({ msg: 'Login realizado com sucesso.', token });
