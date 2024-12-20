@@ -4,6 +4,7 @@ const { registerUser} = require('../controllers/authController');
 const { loginUser } = require('../controllers/logsController');
 const { getUser, getAllUsers, updateUser, deleteUser } = require('../controllers/userController');
 const { verifyToken, verifyAdmin } = require('../middlewares/authMiddleware'); 
+const { sendResetPasswordEmail, verifyResetToken, changePassword } = require('../controllers/passwordController');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
@@ -28,6 +29,22 @@ router.delete('/user/:id', verifyToken, verifyAdmin, async (req, res, next) => {
     }
     next();
 }, deleteUser);
+
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ msg: 'E-mail é obrigatório.' });
+    }
+
+    await sendResetPasswordEmail(email);
+    res.status(200).json({ msg: 'E-mail de recuperação enviado.' });
+});
+
+router.get('/reset-password', verifyResetToken);
+
+router.post('/reset-password', changePassword);
+
 
 
 module.exports = router;
