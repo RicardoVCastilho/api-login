@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt');
 const registerUser = async (req, res) => {
     const { name, email, password, confirmpassword } = req.body;
 
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex .test(email)) {
+        return res.status(422).json({ msg: 'Por favor, forneça um email válido.'});
+    }
+
     if (password !== confirmpassword) {
         return res.status(422).json({ msg: 'As senhas não conferem' });
     }
@@ -25,6 +30,7 @@ const registerUser = async (req, res) => {
         if (error.code === 11000) {
             return res.status(422).json({ msg: 'E-mail já cadastrado. Por favor, utilize outro Email.' });
         }
+        console.error(error);
         res.status(500).json({ msg: 'Erro no servidor. Tente novamente mais tarde.' });
     }
 };

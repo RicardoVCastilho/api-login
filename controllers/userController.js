@@ -17,11 +17,13 @@ const getUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
+
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ msg: 'Erro no servidor, tente novamente mais tarde.' });
     }
 };
+
 
 const updateUser = async (req, res) => {
     const { name, email } = req.body;
@@ -31,10 +33,15 @@ const updateUser = async (req, res) => {
     }
 
     try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser && existingUser._id.toString() !== req.userId) {
+            return res.status(422).json({ msg: 'Este e-mail já está em uso.' });
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
-            req.userId, // ID do usuário vindo do token
+            req.userId,
             { name, email },
-            { new: true } // Retorna o documento atualizado
+            { new: true } 
         );
 
         if (!updatedUser) {
@@ -44,22 +51,33 @@ const updateUser = async (req, res) => {
         res.status(200).json({ msg: 'Usuário atualizado com sucesso.', updatedUser });
     } catch (error) {
         res.status(500).json({ msg: 'Erro no servidor, tente novamente mais tarde.' });
+        console.log(error);
     }
 };
 
+
 const deleteUser = async (req, res) => {
     try {
-        const deletedUser = await User.findByIdAndDelete(req.userId); // Usa o ID do usuário a partir do token
+        if (!req.userId) {
+            return res.status(400).json({ msg: 'ID de usuário inválido.' });
+        }
+
+        const deletedUser = await User.findByIdAndDelete(req.userId);
 
         if (!deletedUser) {
             return res.status(404).json({ msg: 'Usuário não encontrado.' });
         }
 
-        res.status(200).json({ msg: 'Usuário deletado com sucesso.' });
+        res.status(200).json({
+            msg: 'Usuário deletado com sucesso.',
+            deletedUserId: deletedUser._id,
+        });
     } catch (error) {
         res.status(500).json({ msg: 'Erro no servidor, tente novamente mais tarde.' });
+        console.log(error);
     }
 };
+
 
 module.exports = { 
     getUser,
