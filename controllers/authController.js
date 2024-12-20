@@ -2,11 +2,11 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 const registerUser = async (req, res) => {
-    const { name, email, password, confirmpassword } = req.body;
+    const { name, email, password, confirmpassword, role } = req.body;
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailRegex .test(email)) {
-        return res.status(422).json({ msg: 'Por favor, forneça um email válido.'});
+    if (!emailRegex.test(email)) {
+        return res.status(422).json({ msg: 'Por favor, forneça um email válido.' });
     }
 
     if (password !== confirmpassword) {
@@ -16,12 +16,15 @@ const registerUser = async (req, res) => {
     try {
         const salt = await bcrypt.genSalt(12);
         const passwordHash = await bcrypt.hash(password, salt);
+        
+        const userRole = role === 'admin' ? 'admin' : 'user';
 
         const user = new User({ 
             name, 
             email, 
-            password: passwordHash
-         });
+            password: passwordHash,
+            role: userRole 
+        });
          
         await user.save();
 
@@ -34,5 +37,6 @@ const registerUser = async (req, res) => {
         res.status(500).json({ msg: 'Erro no servidor. Tente novamente mais tarde.' });
     }
 };
+
 
 module.exports = { registerUser };
